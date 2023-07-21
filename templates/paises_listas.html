@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info continentes</title>
+    <link rel="stylesheet" href="../static/css/paises_listas.css">
+</head>
+<body>
+    {% if user %}
+    <h1>Bienvenido de nuevo, {{ user }}</h1>
+    {% else %}
+    <h1>Hola Invitado</h1>
+    {% endif %}
+
+    <h2>Lista de países para la región</h2>
+    <h3>Cantidad de países de América: {{ america }}</h3>
+    <h3>Cantidad de países de Europa: {{ europa }}</h3>
+    <h3>Cantidad de países de Asia: {{ asia }}</h3>
+    <p>El total de paises en esta tabla: {{paises_totales}}</p>
+    <table border="1">
+        <thead>
+            <tr>
+                <th style="color: black;">Nombre Continente</th>
+                <th style="color: black;">Nombre país</th>
+                <th style="color: black;">Capital</th>
+                <th style="color: black;">Moneda</th>
+                <th style="color: black;">Población</th>
+                <th style="color: black;">Superficie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Ciclo for que recorra uno a uno los datos de continentes -->
+            {% for continente in continentes %}
+
+            <!-- se usa el "filtro" de jinja2 (length) para obtener la longitud de la lista y se le 
+            asigna a la variable creada "info_paises" -->
+            {% set info_paises = continente.paises|length %}
+
+            <!-- Ciclo para recorrer los paises que hayan en un diccionario -->
+            {% for pais in continente.paises %}
+            <tr>
+                <!-- loop.index que es una variable creada automáticamente por Jinja2 
+                    cuando se utiliza en un bucle for -->
+                {% if loop.index == 1 %}
+                    
+                    <!-- Asignandole a rowspan lo que tenga la variable info_paises para crear las columnas -->
+                    <td rowspan="{{ info_paises }}">{{ continente.nombre }}</td>
+                {% endif %}
+                <td>{{ pais.nombre }}</td>
+                <td>{{ pais.capital }}</td>
+                <td>{{ pais.moneda }}</td>
+                <td>{{ pais.poblacion }}</td>
+                <td>{{ pais.superficie }}</td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
